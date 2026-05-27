@@ -1,222 +1,416 @@
 import streamlit as st
-from datetime import datetime
+
+# ============================================================
+# CONFIGURACIÓN GENERAL
+# ============================================================
 
 st.set_page_config(
-    page_title="Caja de Herramientas - Programas Preventivos Policiales",
+    page_title="Caja de Herramientas Preventiva Policial",
     page_icon="🧰",
     layout="wide"
 )
 
-PROGRAMAS = {
-    "GREAT": {
-        "icon": "🌟",
-        "color1": "#FF7B00",
-        "color2": "#FFD166",
-        "descripcion": "Prevención de violencia, pandillas, presión de grupo y fortalecimiento de habilidades para la vida.",
-        "recursos": [
-            {"tipo": "🌐 Sitio oficial", "nombre": "G.R.E.A.T. Online", "url": "https://www.great-online.org/"},
-            {"tipo": "📄 PDF", "nombre": "Presentación The G.R.E.A.T. Program", "url": "https://neglected-delinquent.ed.gov/sites/default/files/20100505_webinar201004cowan.pdf"},
-            {"tipo": "📚 Información", "nombre": "National Gang Center - GREAT", "url": "https://www.nationalgangcenter.org/Strategies/GREAT"},
-            {"tipo": "🎮 Juego virtual", "nombre": "Juegos de convivencia y ciudadanía", "url": "https://wordwall.net/es-cl/community/convivencia-y-ciudadan%C3%ADa"},
-        ],
-    },
-    "MPAS": {
-        "icon": "🛡️",
-        "color1": "#00B4D8",
-        "color2": "#0077B6",
-        "descripcion": "Material preventivo para seguridad, convivencia, autoprotección y articulación comunitaria.",
-        "recursos": [
-            {"tipo": "📄 PDF", "nombre": "Manual de Seguridad Comunitaria", "url": "https://costaricaporsiempre.org/wp-content/uploads/2021/03/Manual-de-Seguridad-Comunitaria-1.pdf"},
-            {"tipo": "📄 PDF", "nombre": "Policía Comunitaria en Costa Rica", "url": "https://multimedia.uned.ac.cr/ecsh/simposio-policiales-2023/wp-content/uploads/sites/34/2023/09/Policia-comunitaria-en-Costa-Rica.pdf"},
-            {"tipo": "🎮 Juego virtual", "nombre": "Recursos de seguridad ciudadana", "url": "https://wordwall.net/es-pe/community/seguridad-ciudadana"},
-            {"tipo": "🎮 Juego virtual", "nombre": "Normas de convivencia", "url": "https://wordwall.net/es-cl/community/normas-de-convivencia"},
-        ],
-    },
-    "DARE": {
-        "icon": "🎓",
-        "color1": "#7B2CBF",
-        "color2": "#C77DFF",
-        "descripcion": "Educación preventiva para toma de decisiones, habilidades de resistencia y vida saludable.",
-        "recursos": [
-            {"tipo": "🌐 Información", "nombre": "DARE Ohio - Recursos", "url": "https://dare-oh.org/resources/"},
-            {"tipo": "📚 Información", "nombre": "OJP - Introducción al programa DARE", "url": "https://www.ojp.gov/ncjrs/virtual-library/abstracts/introduction-dare-drug-abuse-resistance-education-program-program"},
-            {"tipo": "📄 PDF", "nombre": "DARE Educators Guide", "url": "https://depolarisation.eu/wp-content/uploads/2023/03/English-DARE-Educators-Guide.pdf"},
-            {"tipo": "🎮 Juego virtual", "nombre": "Juegos de convivencia escolar", "url": "https://wordwall.net/es-mx/community/convivencia-paz-y-ciudadan%C3%ADa"},
-        ],
-    },
-    "PSCC": {
-        "icon": "🤝",
-        "color1": "#06D6A0",
-        "color2": "#118AB2",
-        "descripcion": "Recursos para seguridad comunitaria, convivencia ciudadana y participación local.",
-        "recursos": [
-            {"tipo": "📄 PDF", "nombre": "Manual de Seguridad Comunitaria", "url": "https://costaricaporsiempre.org/wp-content/uploads/2021/03/Manual-de-Seguridad-Comunitaria-1.pdf"},
-            {"tipo": "📄 PDF", "nombre": "Policía Comunitaria en Costa Rica", "url": "https://multimedia.uned.ac.cr/ecsh/simposio-policiales-2023/wp-content/uploads/sites/34/2023/09/Policia-comunitaria-en-Costa-Rica.pdf"},
-            {"tipo": "🎮 Juego virtual", "nombre": "Seguridad ciudadana", "url": "https://wordwall.net/es-pe/community/seguridad-ciudadana"},
-            {"tipo": "🎮 Juego virtual", "nombre": "Convivencia y ciudadanía", "url": "https://wordwall.net/es-cl/community/convivencia-y-ciudadan%C3%ADa"},
-        ],
-    },
-    "VIF": {
-        "icon": "🏠",
-        "color1": "#EF476F",
-        "color2": "#D62828",
-        "descripcion": "Material de prevención, sensibilización y atención relacionada con violencia intrafamiliar.",
-        "recursos": [
-            {"tipo": "📄 PDF", "nombre": "Guía metodológica VIF para policías", "url": "https://www.seguridadpublica.go.cr/oieg/biblioteca/legislacion%20y%20normativa/normativa%20interna%20msp/manuales%20programas%20vifa/Guia%20Metodologica%20Masculinidades%20y%20Violencia%20Intrafamiliar%20para%20Policias.pdf"},
-            {"tipo": "📚 Normativa", "nombre": "Protocolo policial VIF - Costa Rica", "url": "https://pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_texto_completo.aspx?nValor1=1&nValor2=90682&nValor3=119570&param1=NRTC&strTipM=TC"},
-            {"tipo": "🎮 Juego virtual", "nombre": "Violencia familiar - Wordwall", "url": "https://wordwall.net/es-mx/community/violencia-familiar"},
-            {"tipo": "🎮 Juego virtual", "nombre": "Juego completar: Violencia intrafamiliar", "url": "https://es.educaplay.com/recursos-educativos/22227239-juego_de_completar_la_violencia_intrafamiliar.html"},
-            {"tipo": "🎮 Juego virtual", "nombre": "La rueda del buen trato", "url": "https://es.educaplay.com/recursos-educativos/6142482-la_ruleta_de_las_emociones.html"},
-        ],
-    },
-}
+# ============================================================
+# ESTILOS CSS
+# ============================================================
 
 st.markdown("""
 <style>
-.stApp {
-    background: linear-gradient(135deg, #f8fbff 0%, #fff7ec 50%, #f4f0ff 100%);
+body {
+    background-color: #f5f7fb;
 }
+
 .main-title {
-    text-align:center;
-    font-size: 46px;
-    font-weight: 900;
-    color: #083B5C;
-    margin-bottom: 0px;
-}
-.subtitle {
-    text-align:center;
-    font-size: 22px;
-    color: #555;
-    margin-bottom: 25px;
-}
-.card {
-    border-radius: 26px;
-    padding: 28px 22px;
-    color: white;
-    min-height: 250px;
-    box-shadow: 0 12px 26px rgba(0,0,0,.18);
     text-align: center;
-    margin-bottom: 10px;
+    font-size: 42px;
+    font-weight: 900;
+    color: #1f2937;
+    margin-bottom: 5px;
 }
-.card .icon {
-    font-size: 48px;
+
+.subtitle {
+    text-align: center;
+    font-size: 20px;
+    color: #4b5563;
+    margin-bottom: 30px;
 }
+
+.card {
+    padding: 28px;
+    border-radius: 25px;
+    color: white;
+    min-height: 230px;
+    text-align: center;
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.20);
+    transition: transform 0.2s ease-in-out;
+    margin-bottom: 15px;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
 .card h2 {
     font-size: 32px;
-    margin: 8px 0;
-    color: white;
+    font-weight: 900;
+    margin-bottom: 10px;
 }
+
 .card p {
-    font-size: 16px;
-    line-height: 1.35;
+    font-size: 17px;
+    line-height: 1.4;
 }
-.resource-box {
+
+.great {
+    background: linear-gradient(135deg, #ff7b00, #ffb703);
+}
+
+.mpas {
+    background: linear-gradient(135deg, #0077b6, #00b4d8);
+}
+
+.dare {
+    background: linear-gradient(135deg, #7209b7, #c77dff);
+}
+
+.pscc {
+    background: linear-gradient(135deg, #06d6a0, #118ab2);
+}
+
+.vif {
+    background: linear-gradient(135deg, #ef476f, #d62828);
+}
+
+.resource-card {
     background: white;
+    padding: 20px;
     border-radius: 18px;
+    box-shadow: 0px 5px 18px rgba(0,0,0,0.12);
+    margin-bottom: 15px;
+    border-left: 8px solid #2563eb;
+}
+
+.resource-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1f2937;
+}
+
+.resource-type {
+    font-size: 15px;
+    font-weight: 700;
+    color: #2563eb;
+}
+
+.resource-desc {
+    color: #4b5563;
+    font-size: 16px;
+}
+
+.info-box {
+    background: #e0f2fe;
     padding: 18px;
-    margin: 10px 0;
-    box-shadow: 0 6px 18px rgba(0,0,0,.08);
-    border-left: 8px solid #118AB2;
-}
-.badge {
-    display:inline-block;
-    padding: 5px 10px;
-    border-radius: 999px;
-    background:#eef6ff;
-    color:#0b5c88;
-    font-weight:700;
-    margin-bottom: 8px;
-}
-.footer {
-    text-align:center;
-    color:#666;
-    margin-top:35px;
-    font-size:13px;
+    border-radius: 15px;
+    border-left: 6px solid #0284c7;
+    margin-bottom: 25px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="main-title">🧰 Caja de Herramientas</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">Programas Preventivos Policiales</div>', unsafe_allow_html=True)
 
-st.info("Versión de ejemplo con enlaces públicos. Antes de usar oficialmente, revise y sustituya los recursos por enlaces institucionales validados.")
+# ============================================================
+# BASE DE RECURSOS
+# Aquí puedes agregar videos, juegos, PDF, presentaciones, etc.
+# ============================================================
 
-if "programa" not in st.session_state:
-    st.session_state.programa = None
+RECURSOS = [
+    # GREAT
+    {
+        "programa": "GREAT",
+        "tipo": "Juego",
+        "titulo": "Página de juegos virtuales Friv",
+        "descripcion": "Enlace de ejemplo hacia una página externa de juegos virtuales.",
+        "url": "https://www.friv.com/"
+    },
+    {
+        "programa": "GREAT",
+        "tipo": "Video",
+        "titulo": "Video educativo de apoyo",
+        "descripcion": "Video de YouTube agregado como ejemplo para el programa.",
+        "url": "https://www.youtube.com/watch?v=NVBf1AgIjBQ"
+    },
+    {
+        "programa": "GREAT",
+        "tipo": "PDF",
+        "titulo": "Material PDF del programa GREAT",
+        "descripcion": "Aquí puedes colocar el enlace de un PDF oficial o guía metodológica.",
+        "url": "https://www.great-online.org/"
+    },
 
-cols = st.columns(5)
-for i, (nombre, data) in enumerate(PROGRAMAS.items()):
-    with cols[i]:
-        st.markdown(
-            f"""
-            <div class="card" style="background:linear-gradient(135deg,{data['color1']},{data['color2']});">
-                <div class="icon">{data['icon']}</div>
-                <h2>{nombre}</h2>
-                <p>{data['descripcion']}</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        if st.button(f"Ingresar a {nombre}", key=f"btn_{nombre}", use_container_width=True):
-            st.session_state.programa = nombre
+    # MPAS
+    {
+        "programa": "MPAS",
+        "tipo": "Juego",
+        "titulo": "Juegos virtuales de apoyo",
+        "descripcion": "Recurso interactivo externo para actividades educativas.",
+        "url": "https://www.friv.com/"
+    },
+    {
+        "programa": "MPAS",
+        "tipo": "Video",
+        "titulo": "Video educativo MPAS",
+        "descripcion": "Video de apoyo para actividades preventivas.",
+        "url": "https://www.youtube.com/watch?v=NVBf1AgIjBQ"
+    },
+    {
+        "programa": "MPAS",
+        "tipo": "PDF",
+        "titulo": "Material informativo MPAS",
+        "descripcion": "Espacio para agregar PDF, guía o documento institucional.",
+        "url": "https://www.seguridadpublica.go.cr/"
+    },
 
-st.divider()
+    # DARE
+    {
+        "programa": "DARE",
+        "tipo": "Video",
+        "titulo": "Video educativo YouTube",
+        "descripcion": "Video agregado como ejemplo para el programa DARE.",
+        "url": "https://www.youtube.com/watch?v=NVBf1AgIjBQ"
+    },
+    {
+        "programa": "DARE",
+        "tipo": "Juego",
+        "titulo": "Juegos virtuales Friv",
+        "descripcion": "Página externa de juegos interactivos.",
+        "url": "https://www.friv.com/"
+    },
+    {
+        "programa": "DARE",
+        "tipo": "PDF",
+        "titulo": "Material PDF DARE",
+        "descripcion": "Espacio para enlazar material informativo del programa.",
+        "url": "https://dare.org/"
+    },
 
-programa = st.session_state.programa
+    # PSCC
+    {
+        "programa": "PSCC",
+        "tipo": "Video",
+        "titulo": "Video comunitario de prevención",
+        "descripcion": "Video de ejemplo para actividades comunitarias.",
+        "url": "https://www.youtube.com/watch?v=NVBf1AgIjBQ"
+    },
+    {
+        "programa": "PSCC",
+        "tipo": "Juego",
+        "titulo": "Juegos virtuales comunitarios",
+        "descripcion": "Página externa de juegos para actividades recreativas.",
+        "url": "https://www.friv.com/"
+    },
+    {
+        "programa": "PSCC",
+        "tipo": "PDF",
+        "titulo": "Material de Seguridad Comunitaria",
+        "descripcion": "Enlace de referencia para material comunitario.",
+        "url": "https://www.seguridadpublica.go.cr/"
+    },
 
-if programa is None:
-    st.markdown("### 👆 Seleccione un programa para ver videos, juegos, PDFs y materiales.")
-else:
-    data = PROGRAMAS[programa]
-    st.markdown(f"## {data['icon']} Recursos del programa {programa}")
-    st.write(data["descripcion"])
+    # VIF
+    {
+        "programa": "VIF",
+        "tipo": "Video",
+        "titulo": "Video de sensibilización",
+        "descripcion": "Video de apoyo para prevención y sensibilización.",
+        "url": "https://www.youtube.com/watch?v=NVBf1AgIjBQ"
+    },
+    {
+        "programa": "VIF",
+        "tipo": "Juego",
+        "titulo": "Actividad virtual de apoyo",
+        "descripcion": "Página externa de juegos para dinámicas educativas.",
+        "url": "https://www.friv.com/"
+    },
+    {
+        "programa": "VIF",
+        "tipo": "PDF",
+        "titulo": "Material informativo VIF",
+        "descripcion": "Espacio para enlazar PDF o guía sobre prevención de violencia intrafamiliar.",
+        "url": "https://www.seguridadpublica.go.cr/"
+    },
+]
 
-    filtro = st.selectbox(
+
+# ============================================================
+# FUNCIONES
+# ============================================================
+
+def seleccionar_programa(nombre_programa):
+    st.session_state["programa_seleccionado"] = nombre_programa
+
+
+def mostrar_tarjeta(programa, emoji, descripcion, clase_css, boton_key):
+    st.markdown(f"""
+    <div class="card {clase_css}">
+        <h2>{emoji} {programa}</h2>
+        <p>{descripcion}</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if st.button(f"Entrar a {programa}", key=boton_key, use_container_width=True):
+        seleccionar_programa(programa)
+
+
+def obtener_icono_tipo(tipo):
+    if tipo == "Video":
+        return "🎥"
+    elif tipo == "Juego":
+        return "🎮"
+    elif tipo == "PDF":
+        return "📄"
+    elif tipo == "Presentación":
+        return "📊"
+    elif tipo == "Actividad":
+        return "🧩"
+    else:
+        return "🔗"
+
+
+def mostrar_recursos(programa):
+    recursos_filtrados = [
+        recurso for recurso in RECURSOS
+        if recurso["programa"] == programa
+    ]
+
+    st.markdown("---")
+    st.header(f"📁 Recursos disponibles para {programa}")
+
+    st.markdown(f"""
+    <div class="info-box">
+        <b>Programa seleccionado:</b> {programa}<br>
+        Desde esta sección puedes abrir videos, juegos virtuales, PDF, guías, actividades o enlaces externos.
+    </div>
+    """, unsafe_allow_html=True)
+
+    if not recursos_filtrados:
+        st.warning("No hay recursos registrados para este programa.")
+        return
+
+    filtro_tipo = st.selectbox(
         "Filtrar por tipo de recurso",
-        ["Todos", "🌐 Sitio oficial", "📄 PDF", "📚 Información", "📚 Normativa", "🎮 Juego virtual"],
+        ["Todos", "Video", "Juego", "PDF", "Presentación", "Actividad", "Enlace"],
+        key=f"filtro_{programa}"
     )
 
-    recursos = data["recursos"]
-    if filtro != "Todos":
-        recursos = [r for r in recursos if r["tipo"] == filtro]
+    if filtro_tipo != "Todos":
+        recursos_filtrados = [
+            recurso for recurso in recursos_filtrados
+            if recurso["tipo"] == filtro_tipo
+        ]
 
-    if not recursos:
-        st.warning("No hay recursos con ese filtro.")
-    else:
-        c1, c2 = st.columns(2)
-        for idx, r in enumerate(recursos):
-            with (c1 if idx % 2 == 0 else c2):
-                st.markdown(
-                    f"""
-                    <div class="resource-box">
-                        <div class="badge">{r['tipo']}</div>
-                        <h3>{r['nombre']}</h3>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
-                st.link_button("Abrir recurso", r["url"], use_container_width=True)
+    for i, recurso in enumerate(recursos_filtrados):
+        icono = obtener_icono_tipo(recurso["tipo"])
 
-    st.divider()
-    st.markdown("### ➕ Agregar recurso manual temporal")
-    with st.form("form_recurso"):
-        tipo = st.selectbox("Tipo", ["🎥 Video", "🎮 Juego virtual", "📄 PDF", "🌐 Enlace", "📚 Información"])
-        nombre = st.text_input("Nombre del recurso")
-        url = st.text_input("Enlace")
-        guardar = st.form_submit_button("Mostrar recurso agregado")
-        if guardar:
-            if nombre and url:
-                st.success("Recurso agregado temporalmente en pantalla. Para guardarlo permanente, se debe conectar a Google Sheets, Excel o Supabase.")
-                st.markdown(f"**{tipo} {nombre}**")
-                st.link_button("Abrir recurso agregado", url)
-            else:
-                st.error("Debe completar nombre y enlace.")
+        st.markdown(f"""
+        <div class="resource-card">
+            <div class="resource-type">{icono} {recurso["tipo"]}</div>
+            <div class="resource-title">{recurso["titulo"]}</div>
+            <div class="resource-desc">{recurso["descripcion"]}</div>
+        </div>
+        """, unsafe_allow_html=True)
 
+        st.link_button(
+            f"{icono} Abrir recurso",
+            recurso["url"],
+            use_container_width=True
+        )
+
+
+# ============================================================
+# INTERFAZ PRINCIPAL
+# ============================================================
+
+st.markdown('<div class="main-title">🧰 Caja de Herramientas</div>', unsafe_allow_html=True)
 st.markdown(
-    f'<div class="footer">Caja de Herramientas Preventiva Policial | Generado el {datetime.now().strftime("%d/%m/%Y")}</div>',
+    '<div class="subtitle">Programas Preventivos Policiales</div>',
     unsafe_allow_html=True
 )
 
+st.markdown("""
+<div class="info-box">
+Esta caja de herramientas permite centralizar materiales digitales de los programas preventivos policiales:
+videos, juegos virtuales, documentos PDF, guías, presentaciones y recursos externos.
+</div>
+""", unsafe_allow_html=True)
+
+# ============================================================
+# TARJETAS DE PROGRAMAS
+# ============================================================
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    mostrar_tarjeta(
+        "GREAT",
+        "🌟",
+        "Recursos, actividades, videos y herramientas preventivas para jóvenes.",
+        "great",
+        "btn_great"
+    )
+
+with col2:
+    mostrar_tarjeta(
+        "MPAS",
+        "🛡️",
+        "Materiales de apoyo preventivo, actividades educativas y recursos digitales.",
+        "mpas",
+        "btn_mpas"
+    )
+
+with col3:
+    mostrar_tarjeta(
+        "DARE",
+        "🎓",
+        "Videos, dinámicas, juegos y material formativo para prevención.",
+        "dare",
+        "btn_dare"
+    )
+
+col4, col5 = st.columns(2)
+
+with col4:
+    mostrar_tarjeta(
+        "PSCC",
+        "🤝",
+        "Herramientas comunitarias, seguridad ciudadana y recursos de apoyo.",
+        "pscc",
+        "btn_pscc"
+    )
+
+with col5:
+    mostrar_tarjeta(
+        "VIF",
+        "🏠",
+        "Material para prevención, sensibilización y orientación en violencia intrafamiliar.",
+        "vif",
+        "btn_vif"
+    )
+
+# ============================================================
+# MOSTRAR RECURSOS DEL PROGRAMA SELECCIONADO
+# ============================================================
+
+programa_actual = st.session_state.get("programa_seleccionado")
+
+if programa_actual:
+    mostrar_recursos(programa_actual)
+
+# ============================================================
+# PIE DE PÁGINA
+# ============================================================
+
+st.markdown("---")
+st.caption("Caja de Herramientas Digital | Programas Preventivos Policiales")
 
 
 
