@@ -1,9 +1,5 @@
 import streamlit as st
 
-# ============================================================
-# CONFIGURACIÓN GENERAL
-# ============================================================
-
 st.set_page_config(
     page_title="Caja de Herramientas Preventiva Policial",
     page_icon="🧰",
@@ -11,15 +7,11 @@ st.set_page_config(
 )
 
 # ============================================================
-# ESTILOS CSS
+# CSS
 # ============================================================
 
 st.markdown("""
 <style>
-body {
-    background-color: #f5f7fb;
-}
-
 .main-title {
     text-align: center;
     font-size: 42px;
@@ -81,6 +73,15 @@ body {
     background: linear-gradient(135deg, #ef476f, #d62828);
 }
 
+.info-box {
+    background: #e0f2fe;
+    padding: 18px;
+    border-radius: 15px;
+    border-left: 6px solid #0284c7;
+    margin-bottom: 25px;
+    color: #1f2937;
+}
+
 .resource-card {
     background: white;
     padding: 20px;
@@ -107,24 +108,32 @@ body {
     font-size: 16px;
 }
 
-.info-box {
-    background: #e0f2fe;
-    padding: 18px;
-    border-radius: 15px;
-    border-left: 6px solid #0284c7;
+.program-header {
+    padding: 35px;
+    border-radius: 28px;
+    color: white;
+    text-align: center;
     margin-bottom: 25px;
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.20);
+}
+
+.program-header h1 {
+    font-size: 44px;
+    font-weight: 900;
+    margin-bottom: 8px;
+}
+
+.program-header p {
+    font-size: 19px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-
 # ============================================================
 # BASE DE RECURSOS
-# Aquí puedes agregar videos, juegos, PDF, presentaciones, etc.
 # ============================================================
 
 RECURSOS = [
-    # GREAT
     {
         "programa": "GREAT",
         "tipo": "Juego",
@@ -147,7 +156,6 @@ RECURSOS = [
         "url": "https://www.great-online.org/"
     },
 
-    # MPAS
     {
         "programa": "MPAS",
         "tipo": "Juego",
@@ -170,7 +178,6 @@ RECURSOS = [
         "url": "https://www.seguridadpublica.go.cr/"
     },
 
-    # DARE
     {
         "programa": "DARE",
         "tipo": "Video",
@@ -193,7 +200,6 @@ RECURSOS = [
         "url": "https://dare.org/"
     },
 
-    # PSCC
     {
         "programa": "PSCC",
         "tipo": "Video",
@@ -216,7 +222,6 @@ RECURSOS = [
         "url": "https://www.seguridadpublica.go.cr/"
     },
 
-    # VIF
     {
         "programa": "VIF",
         "tipo": "Video",
@@ -240,6 +245,33 @@ RECURSOS = [
     },
 ]
 
+PROGRAMAS = {
+    "GREAT": {
+        "emoji": "🌟",
+        "clase": "great",
+        "descripcion": "Recursos, actividades, videos y herramientas preventivas para jóvenes."
+    },
+    "MPAS": {
+        "emoji": "🛡️",
+        "clase": "mpas",
+        "descripcion": "Materiales de apoyo preventivo, actividades educativas y recursos digitales."
+    },
+    "DARE": {
+        "emoji": "🎓",
+        "clase": "dare",
+        "descripcion": "Videos, dinámicas, juegos y material formativo para prevención."
+    },
+    "PSCC": {
+        "emoji": "🤝",
+        "clase": "pscc",
+        "descripcion": "Herramientas comunitarias, seguridad ciudadana y recursos de apoyo."
+    },
+    "VIF": {
+        "emoji": "🏠",
+        "clase": "vif",
+        "descripcion": "Material para prevención, sensibilización y orientación en violencia intrafamiliar."
+    },
+}
 
 # ============================================================
 # FUNCIONES
@@ -247,54 +279,104 @@ RECURSOS = [
 
 def seleccionar_programa(nombre_programa):
     st.session_state["programa_seleccionado"] = nombre_programa
+    st.rerun()
 
 
-def mostrar_tarjeta(programa, emoji, descripcion, clase_css, boton_key):
-    st.markdown(f"""
-    <div class="card {clase_css}">
-        <h2>{emoji} {programa}</h2>
-        <p>{descripcion}</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    if st.button(f"Entrar a {programa}", key=boton_key, use_container_width=True):
-        seleccionar_programa(programa)
+def volver_inicio():
+    st.session_state["programa_seleccionado"] = None
+    st.rerun()
 
 
 def obtener_icono_tipo(tipo):
     if tipo == "Video":
         return "🎥"
-    elif tipo == "Juego":
+    if tipo == "Juego":
         return "🎮"
-    elif tipo == "PDF":
+    if tipo == "PDF":
         return "📄"
-    elif tipo == "Presentación":
+    if tipo == "Presentación":
         return "📊"
-    elif tipo == "Actividad":
+    if tipo == "Actividad":
         return "🧩"
-    else:
-        return "🔗"
+    return "🔗"
 
 
-def mostrar_recursos(programa):
+def mostrar_tarjeta(programa):
+    datos = PROGRAMAS[programa]
+
+    st.markdown(f"""
+    <div class="card {datos["clase"]}">
+        <h2>{datos["emoji"]} {programa}</h2>
+        <p>{datos["descripcion"]}</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if st.button(f"Entrar a {programa}", key=f"btn_{programa}", use_container_width=True):
+        seleccionar_programa(programa)
+
+
+def mostrar_menu_principal():
+    st.markdown('<div class="main-title">🧰 Caja de Herramientas</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="subtitle">Programas Preventivos Policiales</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown("""
+    <div class="info-box">
+    Esta caja de herramientas permite centralizar materiales digitales de los programas preventivos policiales:
+    videos, juegos virtuales, documentos PDF, guías, presentaciones y recursos externos.
+    </div>
+    """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        mostrar_tarjeta("GREAT")
+
+    with col2:
+        mostrar_tarjeta("MPAS")
+
+    with col3:
+        mostrar_tarjeta("DARE")
+
+    col4, col5 = st.columns(2)
+
+    with col4:
+        mostrar_tarjeta("PSCC")
+
+    with col5:
+        mostrar_tarjeta("VIF")
+
+    st.markdown("---")
+    st.caption("Caja de Herramientas Digital | Programas Preventivos Policiales")
+
+
+def mostrar_pagina_programa(programa):
+    datos = PROGRAMAS[programa]
+
+    if st.button("⬅️ Volver a la caja de herramientas", use_container_width=True):
+        volver_inicio()
+
+    st.markdown(f"""
+    <div class="program-header {datos["clase"]}">
+        <h1>{datos["emoji"]} {programa}</h1>
+        <p>{datos["descripcion"]}</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown(f"""
+    <div class="info-box">
+    <b>Carpeta del programa:</b> {programa}<br>
+    Aquí se muestran únicamente los recursos relacionados con este programa:
+    videos, juegos virtuales, documentos PDF, guías, actividades y enlaces externos.
+    </div>
+    """, unsafe_allow_html=True)
+
     recursos_filtrados = [
         recurso for recurso in RECURSOS
         if recurso["programa"] == programa
     ]
-
-    st.markdown("---")
-    st.header(f"📁 Recursos disponibles para {programa}")
-
-    st.markdown(f"""
-    <div class="info-box">
-        <b>Programa seleccionado:</b> {programa}<br>
-        Desde esta sección puedes abrir videos, juegos virtuales, PDF, guías, actividades o enlaces externos.
-    </div>
-    """, unsafe_allow_html=True)
-
-    if not recursos_filtrados:
-        st.warning("No hay recursos registrados para este programa.")
-        return
 
     filtro_tipo = st.selectbox(
         "Filtrar por tipo de recurso",
@@ -308,7 +390,11 @@ def mostrar_recursos(programa):
             if recurso["tipo"] == filtro_tipo
         ]
 
-    for i, recurso in enumerate(recursos_filtrados):
+    if not recursos_filtrados:
+        st.warning("No hay recursos registrados para este filtro.")
+        return
+
+    for recurso in recursos_filtrados:
         icono = obtener_icono_tipo(recurso["tipo"])
 
         st.markdown(f"""
@@ -327,92 +413,18 @@ def mostrar_recursos(programa):
 
 
 # ============================================================
-# INTERFAZ PRINCIPAL
+# CONTROL DE NAVEGACIÓN
 # ============================================================
 
-st.markdown('<div class="main-title">🧰 Caja de Herramientas</div>', unsafe_allow_html=True)
-st.markdown(
-    '<div class="subtitle">Programas Preventivos Policiales</div>',
-    unsafe_allow_html=True
-)
+if "programa_seleccionado" not in st.session_state:
+    st.session_state["programa_seleccionado"] = None
 
-st.markdown("""
-<div class="info-box">
-Esta caja de herramientas permite centralizar materiales digitales de los programas preventivos policiales:
-videos, juegos virtuales, documentos PDF, guías, presentaciones y recursos externos.
-</div>
-""", unsafe_allow_html=True)
-
-# ============================================================
-# TARJETAS DE PROGRAMAS
-# ============================================================
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    mostrar_tarjeta(
-        "GREAT",
-        "🌟",
-        "Recursos, actividades, videos y herramientas preventivas para jóvenes.",
-        "great",
-        "btn_great"
-    )
-
-with col2:
-    mostrar_tarjeta(
-        "MPAS",
-        "🛡️",
-        "Materiales de apoyo preventivo, actividades educativas y recursos digitales.",
-        "mpas",
-        "btn_mpas"
-    )
-
-with col3:
-    mostrar_tarjeta(
-        "DARE",
-        "🎓",
-        "Videos, dinámicas, juegos y material formativo para prevención.",
-        "dare",
-        "btn_dare"
-    )
-
-col4, col5 = st.columns(2)
-
-with col4:
-    mostrar_tarjeta(
-        "PSCC",
-        "🤝",
-        "Herramientas comunitarias, seguridad ciudadana y recursos de apoyo.",
-        "pscc",
-        "btn_pscc"
-    )
-
-with col5:
-    mostrar_tarjeta(
-        "VIF",
-        "🏠",
-        "Material para prevención, sensibilización y orientación en violencia intrafamiliar.",
-        "vif",
-        "btn_vif"
-    )
-
-# ============================================================
-# MOSTRAR RECURSOS DEL PROGRAMA SELECCIONADO
-# ============================================================
-
-programa_actual = st.session_state.get("programa_seleccionado")
+programa_actual = st.session_state["programa_seleccionado"]
 
 if programa_actual:
-    mostrar_recursos(programa_actual)
-
-# ============================================================
-# PIE DE PÁGINA
-# ============================================================
-
-st.markdown("---")
-st.caption("Caja de Herramientas Digital | Programas Preventivos Policiales")
-
-
+    mostrar_pagina_programa(programa_actual)
+else:
+    mostrar_menu_principal()
 
 
 
