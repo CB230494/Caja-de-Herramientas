@@ -110,13 +110,12 @@ def convertir_imagen_base64(ruta):
     with open(ruta, "rb") as archivo:
         return base64.b64encode(archivo.read()).decode()
 
-LOGOS_PROGRAMAS = {
-    "GREAT": "Logo GREAT.jpeg",
-    "MPAS": "Logo MPAS.jpeg",
-    "DARE": "Logo DARE.jpeg",
-    "PSCC": "Logo PSCC.jpeg",
-    "VIF": "Logo VIF.jpeg",
-}
+def bloque_logo_programa(nombre_programa, clase_css="logo-programa"):
+    logo = PROGRAMAS.get(nombre_programa, {}).get("logo", "")
+    logo_base64 = convertir_imagen_base64(logo)
+    if logo_base64:
+        return f'<img class="{clase_css}" src="data:image/jpeg;base64,{logo_base64}">'
+    return f'<div class="logo-faltante">{nombre_programa}</div>'
 
 st.markdown("""
 <style>
@@ -186,6 +185,17 @@ h1,h2,h3,h4,h5,h6,p,span,label,div { color: #111827 !important; }
     padding: 10px;
     margin-bottom: 14px;
     box-shadow: 0px 5px 16px rgba(0,0,0,0.15);
+}
+.logo-programa-header {
+    width: 240px;
+    height: 130px;
+    object-fit: contain;
+    background: rgba(255,255,255,0.96);
+    border-radius: 22px;
+    padding: 14px;
+    margin: 0 auto 18px auto;
+    display: block;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.18);
 }
 .logo-faltante {
     font-size: 44px;
@@ -332,6 +342,10 @@ h1,h2,h3,h4,h5,h6,p,span,label,div { color: #111827 !important; }
     }
     .card h2 { font-size: 28px !important; }
     .logo-programa { height: 95px !important; }
+    .logo-programa-header {
+        width: 190px !important;
+        height: 105px !important;
+    }
     .program-header h1 { font-size: 32px !important; }
     .folder-card {
         min-height: auto !important;
@@ -372,12 +386,7 @@ def volver_vif():
 
 def mostrar_tarjeta_programa(programa):
     datos = PROGRAMAS[programa]
-    logo_base64 = convertir_imagen_base64(datos["logo"])
-
-    if logo_base64:
-        bloque_logo = f'<img class="logo-programa" src="data:image/jpeg;base64,{logo_base64}">'
-    else:
-        bloque_logo = f'<div class="logo-faltante">{programa}</div>'
+    bloque_logo = bloque_logo_programa(programa, "logo-programa")
 
     st.markdown(f"""
     <div class="card {datos["clase"]}">
@@ -421,12 +430,14 @@ def mostrar_menu_principal():
 
 def mostrar_archivos_carpeta(nombre_carpeta, link_carpeta):
     archivos = ARCHIVOS_VIF.get(nombre_carpeta, [])
+    logo_vif = bloque_logo_programa("VIF", "logo-programa-header")
 
     if st.button("⬅️ Volver a subcarpetas VIF", use_container_width=True):
         volver_vif()
 
     st.markdown(f"""
     <div class="program-header vif">
+        {logo_vif}
         <h1>{nombre_carpeta}</h1>
         <p>Archivos disponibles dentro de esta subcarpeta</p>
     </div>
@@ -454,6 +465,7 @@ def mostrar_archivos_carpeta(nombre_carpeta, link_carpeta):
 
 def mostrar_vif():
     carpeta_actual = st.session_state["carpeta_vif"]
+    logo_vif = bloque_logo_programa("VIF", "logo-programa-header")
 
     if carpeta_actual:
         mostrar_archivos_carpeta(carpeta_actual["nombre"], carpeta_actual["link"])
@@ -462,9 +474,10 @@ def mostrar_vif():
     if st.button("⬅️ Volver a la caja de herramientas", use_container_width=True):
         volver_inicio()
 
-    st.markdown("""
+    st.markdown(f"""
     <div class="program-header vif">
-        <h1>🏠 VIF</h1>
+        {logo_vif}
+        <h1>VIF</h1>
         <p>Violencia Intrafamiliar | PLANOVI | CONATT | SEGVIF | Redes Locales</p>
     </div>
     """, unsafe_allow_html=True)
