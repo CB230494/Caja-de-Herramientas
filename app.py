@@ -1,4 +1,6 @@
 import streamlit as st
+import base64
+import os
 
 st.set_page_config(
     page_title="Caja de Herramientas Digital",
@@ -102,6 +104,20 @@ ARCHIVOS_VIF = {
     ],
 }
 
+def convertir_imagen_base64(ruta):
+    if not os.path.exists(ruta):
+        return ""
+    with open(ruta, "rb") as archivo:
+        return base64.b64encode(archivo.read()).decode()
+
+LOGOS_PROGRAMAS = {
+    "GREAT": "Logo GREAT.jpeg",
+    "MPAS": "Logo MPAS.jpeg",
+    "DARE": "Logo DARE.jpeg",
+    "PSCC": "Logo PSCC.jpeg",
+    "VIF": "Logo VIF.jpeg",
+}
+
 st.markdown("""
 <style>
 :root, html, body, .stApp {
@@ -141,10 +157,10 @@ h1,h2,h3,h4,h5,h6,p,span,label,div { color: #111827 !important; }
 .info-box * { color: #1f2937 !important; }
 
 .card {
-    padding: 28px;
+    padding: 24px;
     border-radius: 25px;
     color: white !important;
-    min-height: 230px;
+    min-height: 280px;
     text-align: center;
     box-shadow: 0px 10px 25px rgba(0,0,0,0.20);
     transition: transform 0.2s ease-in-out;
@@ -153,13 +169,31 @@ h1,h2,h3,h4,h5,h6,p,span,label,div { color: #111827 !important; }
 .card:hover { transform: scale(1.03); }
 .card * { color: white !important; }
 .card h2 {
-    font-size: 32px;
+    font-size: 30px;
     font-weight: 900;
     margin-bottom: 10px;
 }
 .card p {
     font-size: 17px;
     line-height: 1.4;
+}
+.logo-programa {
+    width: 100%;
+    height: 120px;
+    object-fit: contain;
+    background: rgba(255,255,255,0.92);
+    border-radius: 18px;
+    padding: 10px;
+    margin-bottom: 14px;
+    box-shadow: 0px 5px 16px rgba(0,0,0,0.15);
+}
+.logo-faltante {
+    font-size: 44px;
+    font-weight: 900;
+    background: rgba(255,255,255,0.18);
+    border-radius: 18px;
+    padding: 25px;
+    margin-bottom: 14px;
 }
 
 .great { background: linear-gradient(135deg, #ff7b00, #ffb703); }
@@ -293,10 +327,11 @@ h1,h2,h3,h4,h5,h6,p,span,label,div { color: #111827 !important; }
     .main-title { font-size: 34px !important; }
     .subtitle { font-size: 16px !important; }
     .card {
-        min-height: 185px !important;
+        min-height: 230px !important;
         padding: 22px !important;
     }
     .card h2 { font-size: 28px !important; }
+    .logo-programa { height: 95px !important; }
     .program-header h1 { font-size: 32px !important; }
     .folder-card {
         min-height: auto !important;
@@ -314,11 +349,11 @@ if "carpeta_vif" not in st.session_state:
     st.session_state["carpeta_vif"] = None
 
 PROGRAMAS = {
-    "GREAT": {"emoji": "🌟", "clase": "great", "descripcion": "Recursos, actividades, videos y herramientas preventivas para jóvenes.", "activo": False},
-    "MPAS": {"emoji": "🛡️", "clase": "mpas", "descripcion": "Materiales de apoyo preventivo, actividades educativas y recursos digitales.", "activo": False},
-    "DARE": {"emoji": "🎓", "clase": "dare", "descripcion": "Videos, dinámicas, juegos y material formativo para prevención.", "activo": False},
-    "PSCC": {"emoji": "🤝", "clase": "pscc", "descripcion": "Herramientas comunitarias, seguridad ciudadana y recursos de apoyo.", "activo": False},
-    "VIF": {"emoji": "🏠", "clase": "vif", "descripcion": "Material VIF, PLANOVI, CONATT, SEGVIF, redes locales, manuales y políticas públicas.", "activo": True},
+    "GREAT": {"logo": "Logo GREAT.jpeg", "clase": "great", "descripcion": "Recursos, actividades, videos y herramientas preventivas para jóvenes.", "activo": False},
+    "MPAS": {"logo": "Logo MPAS.jpeg", "clase": "mpas", "descripcion": "Materiales de apoyo preventivo, actividades educativas y recursos digitales.", "activo": False},
+    "DARE": {"logo": "Logo DARE.jpeg", "clase": "dare", "descripcion": "Videos, dinámicas, juegos y material formativo para prevención.", "activo": False},
+    "PSCC": {"logo": "Logo PSCC.jpeg", "clase": "pscc", "descripcion": "Herramientas comunitarias, seguridad ciudadana y recursos de apoyo.", "activo": False},
+    "VIF": {"logo": "Logo VIF.jpeg", "clase": "vif", "descripcion": "Material VIF, PLANOVI, CONATT, SEGVIF, redes locales, manuales y políticas públicas.", "activo": True},
 }
 
 def seleccionar_programa(nombre_programa):
@@ -337,9 +372,17 @@ def volver_vif():
 
 def mostrar_tarjeta_programa(programa):
     datos = PROGRAMAS[programa]
+    logo_base64 = convertir_imagen_base64(datos["logo"])
+
+    if logo_base64:
+        bloque_logo = f'<img class="logo-programa" src="data:image/jpeg;base64,{logo_base64}">'
+    else:
+        bloque_logo = f'<div class="logo-faltante">{programa}</div>'
+
     st.markdown(f"""
     <div class="card {datos["clase"]}">
-        <h2>{datos["emoji"]} {programa}</h2>
+        {bloque_logo}
+        <h2>{programa}</h2>
         <p>{datos["descripcion"]}</p>
     </div>
     """, unsafe_allow_html=True)
