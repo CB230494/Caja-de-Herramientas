@@ -49,6 +49,29 @@ ARCHIVOS_VIF = {
         ("📄 INSTRUCTIVO HERRAMIENTA SEGVIF 2020.pdf", "PDF", "https://drive.google.com/file/d/1BqiGiO2MxbxTN0mSe2tGNbjYOxa3YHVA/view?usp=sharing"),
         ("📊 Herramienta de Seguimientos SEVIF 2020 FINAL.pptx", "PowerPoint", "https://docs.google.com/presentation/d/1msGXbDyDkg0xdNppY7rLUSw7_edvHeMu/edit?usp=drive_link&ouid=110050131819372397900&rtpof=true&sd=true"),
     ],
+    "🏫 Protocolos MEP": [
+        ("📄 protocolo-trata-personas.pdf", "PDF", "https://drive.google.com/file/d/1sz8Fp3VixQt0vj66lyMmXfdUoTsF1PZY/view?usp=drive_link"),
+        ("📄 protocolo-situaciones-violencia_0.pdf", "PDF", "https://drive.google.com/file/d/19v9CvV8R5A9T4XtXWU60_c5T7v0FdTzq/view?usp=drive_link"),
+        ("📄 protocolo-prevencion-suicidio.pdf", "PDF", "https://drive.google.com/file/d/1CK78vUs_O4QBXIvSGt_t2ksAl6zEGiwV/view?usp=drive_link"),
+        ("📄 Protocolo-de-drogas-Ruta.pdf", "PDF", "https://drive.google.com/file/d/19kuC2hz7Qa5GkUbTbyD0R66lgrPtBVVj/view?usp=drive_link"),
+        ("📄 protocolo-atencion-maternidad-adolescente.pdf", "PDF", "https://drive.google.com/file/d/1LKk7rQadWVKNhiz7_4AlNAI3CgYA3qnD/view?usp=drive_link"),
+        ("📄 protocolo-actuacion-violencia-ruta.pdf", "PDF", "https://drive.google.com/file/d/1tII4jO5gQ1sfP-Pg9644Ahro41IqlWtS/view?usp=drive_link"),
+        ("📄 protocolo-actuacion-violencia-desplegable.pdf", "PDF", "https://drive.google.com/file/d/1q51JHp2I5KuxXycUuTcW1oacGF_UfOjA/view?usp=drive_link"),
+        ("📄 protocolo-actuacion-situaciones-discriminacion-racial-xenofobia_0.pdf", "PDF", "https://drive.google.com/file/d/1nuV8QaM27PaUjPmg7PAsjnq6tZecHMfE/view?usp=drive_link"),
+        ("📄 protocolo-actuacion-situaciones-bullying.pdf", "PDF", "https://drive.google.com/file/d/1mF1c7DHBKaVj8Vl5GUZ4GNlot2LihjXl/view?usp=drive_link"),
+        ("📄 protocolo-actuacion-drogas-desplegable.pdf", "PDF", "https://drive.google.com/file/d/1SYdhzmdXfQb08wj3xa6GiveNctGvSet5/view?usp=drive_link"),
+        ("📄 protocolo-actuacion-armas.pdf", "PDF", "https://drive.google.com/file/d/1m8s61lGgrOIllSG_essFbMOLNzyf9wRp/view?usp=drive_link"),
+        ("📄 protocolo-actuacion-armas-ruta.pdf", "PDF", "https://drive.google.com/file/d/1aGDJ61TOSceDG4bV9pboXJW2AW3nQxLA/view?usp=drive_link"),
+        ("📄 protocolo-actuacion-armas-desplegable.pdf", "PDF", "https://drive.google.com/file/d/1l31Ra76tIEBB0IH6-Ea3uIsLc5VTihG5/view?usp=drive_link"),
+        ("📄 protocolo_de_drogas.pdf", "PDF", "https://drive.google.com/file/d/1x_C-4pcdX8z73CCfbZReZjIz7T6t14EM/view?usp=drive_link"),
+        ("📄 pautasgeneralesprotocolos18122015-1.pdf", "PDF", "https://drive.google.com/file/d/1CsSMTxuBO2PIYIzSB0W-YI3vol2OjF9r/view?usp=drive_link"),
+        ("📄 atencion-bullying-contra-poblacion-lgtb.pdf", "PDF", "https://drive.google.com/file/d/1Ws6U8aI5G2RLXtKBLZMPtDWyhRbb9Wpu/view?usp=drive_link"),
+        ("📄 afiche-ruta-protocolo-bullying.pdf", "PDF", "https://drive.google.com/file/d/1xk_EMdPW6Sz-oI80AdUlzdGPGboK12OX/view?usp=drive_link"),
+    ],
+    "📊 Presentaciones Metodologías para Aplicar": [
+        ("📊 PRESENTACION INDUCCION VIRTUAL PREVENCION DE LA VIOLENCIA", "PowerPoint", "https://docs.google.com/presentation/d/1Cc6pcx6mDU0O47oOhdr1OSw3dSsbKf4-/edit?usp=drive_link&ouid=110050131819372397900&rtpof=true&sd=true"),
+        ("📊 PRESENTACION INDUCCION VIRTUAL MASCULINIDADES POSITIVAS", "PowerPoint", "https://docs.google.com/presentation/d/1W8XCCbx8XrCreLAtkjLf-jGlcR5UHl4l/edit?usp=drive_link&ouid=110050131819372397900&rtpof=true&sd=true"),
+    ],
 }
 
 st.markdown("""
