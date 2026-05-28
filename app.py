@@ -1,433 +1,492 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Caja de Herramientas Preventiva Policial",
+    page_title="Caja de Herramientas Digital",
     page_icon="🧰",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
-# ============================================================
-# CSS
-# ============================================================
+# =========================================================
+# LINKS DRIVE
+# =========================================================
+
+LINK_VIF = "https://drive.google.com/drive/folders/1KNIbV3Rts_McZja4S5johnYgjmx6165u"
+
+# =========================================================
+# ESTILOS
+# =========================================================
 
 st.markdown("""
 <style>
-.main-title {
-    text-align: center;
-    font-size: 42px;
-    font-weight: 900;
-    color: #1f2937;
-    margin-bottom: 5px;
+
+:root, html, body, .stApp {
+    background: #f3f6fb !important;
+    color: #111827 !important;
+    color-scheme: light !important;
 }
 
-.subtitle {
-    text-align: center;
-    font-size: 20px;
-    color: #4b5563;
+* {
+    color-scheme: light !important;
+}
+
+h1,h2,h3,h4,h5,h6,p,span,label,div {
+    color: #111827 !important;
+}
+
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%) !important;
+}
+
+[data-testid="stSidebar"] * {
+    color: white !important;
+}
+
+.main-title {
+    font-size: 52px;
+    font-weight: 900;
+    color: #0f172a !important;
+    margin-bottom: 8px;
+}
+
+.main-subtitle {
+    font-size: 18px;
+    color: #475569 !important;
     margin-bottom: 30px;
 }
 
 .card {
+    background: white !important;
+    border-radius: 24px;
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+.card * {
+    color: #111827 !important;
+}
+
+.module-card {
+    border-radius: 28px;
     padding: 28px;
-    border-radius: 25px;
-    color: white;
-    min-height: 230px;
-    text-align: center;
-    box-shadow: 0px 10px 25px rgba(0,0,0,0.20);
-    transition: transform 0.2s ease-in-out;
-    margin-bottom: 15px;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
 }
 
-.card:hover {
-    transform: scale(1.03);
+.module-card * {
+    color: white !important;
 }
 
-.card h2 {
-    font-size: 32px;
-    font-weight: 900;
+.module-card h2 {
+    font-size: 34px !important;
     margin-bottom: 10px;
 }
 
-.card p {
-    font-size: 17px;
-    line-height: 1.4;
-}
-
-.great {
-    background: linear-gradient(135deg, #ff7b00, #ffb703);
-}
-
-.mpas {
-    background: linear-gradient(135deg, #0077b6, #00b4d8);
-}
-
-.dare {
-    background: linear-gradient(135deg, #7209b7, #c77dff);
-}
-
-.pscc {
-    background: linear-gradient(135deg, #06d6a0, #118ab2);
+.module-card p {
+    font-size: 18px !important;
+    line-height: 1.5;
 }
 
 .vif {
-    background: linear-gradient(135deg, #ef476f, #d62828);
+    background: linear-gradient(135deg,#dc2626,#f97316);
+}
+
+.dare {
+    background: linear-gradient(135deg,#2563eb,#0891b2);
+}
+
+.great {
+    background: linear-gradient(135deg,#16a34a,#22c55e);
+}
+
+.juegos {
+    background: linear-gradient(135deg,#7c3aed,#a855f7);
+}
+
+.sidebar-card {
+    background: rgba(255,255,255,0.08);
+    padding: 18px;
+    border-radius: 18px;
+    margin-bottom: 16px;
+}
+
+.sidebar-card * {
+    color: white !important;
+}
+
+.stButton > button {
+    width: 100% !important;
+    min-height: 50px !important;
+    border-radius: 16px !important;
+    font-weight: 900 !important;
+    background: linear-gradient(135deg,#1d4ed8,#2563eb) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.stButton > button:hover {
+    background: linear-gradient(135deg,#1e40af,#1d4ed8) !important;
+    color: white !important;
+}
+
+.stLinkButton > a {
+    width: 100% !important;
+    min-height: 50px !important;
+    border-radius: 16px !important;
+    font-weight: 900 !important;
+    background: linear-gradient(135deg,#16a34a,#22c55e) !important;
+    color: white !important;
+    border: none !important;
+    text-align: center !important;
+}
+
+.folder-card {
+    background: white !important;
+    border-radius: 22px;
+    padding: 22px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    margin-bottom: 18px;
+}
+
+.folder-card h3 {
+    color: #0f172a !important;
+}
+
+.folder-card p {
+    color: #475569 !important;
 }
 
 .info-box {
-    background: #e0f2fe;
-    padding: 18px;
-    border-radius: 15px;
-    border-left: 6px solid #0284c7;
-    margin-bottom: 25px;
-    color: #1f2937;
-}
-
-.resource-card {
-    background: white;
-    padding: 20px;
-    border-radius: 18px;
-    box-shadow: 0px 5px 18px rgba(0,0,0,0.12);
-    margin-bottom: 15px;
+    background: #eff6ff !important;
     border-left: 8px solid #2563eb;
-}
-
-.resource-title {
-    font-size: 22px;
-    font-weight: 800;
-    color: #1f2937;
-}
-
-.resource-type {
-    font-size: 15px;
-    font-weight: 700;
-    color: #2563eb;
-}
-
-.resource-desc {
-    color: #4b5563;
-    font-size: 16px;
-}
-
-.program-header {
-    padding: 35px;
-    border-radius: 28px;
-    color: white;
-    text-align: center;
+    border-radius: 18px;
+    padding: 20px;
     margin-bottom: 25px;
-    box-shadow: 0px 10px 25px rgba(0,0,0,0.20);
 }
 
-.program-header h1 {
-    font-size: 44px;
-    font-weight: 900;
-    margin-bottom: 8px;
+.info-box * {
+    color: #1e3a8a !important;
 }
 
-.program-header p {
-    font-size: 19px;
+@media (max-width: 768px){
+
+    .main-title{
+        font-size:38px !important;
+    }
+
+    .module-card{
+        min-height:180px !important;
+        padding:22px !important;
+    }
+
+    .module-card h2{
+        font-size:28px !important;
+    }
+
+    .module-card p{
+        font-size:16px !important;
+    }
+
 }
+
 </style>
 """, unsafe_allow_html=True)
 
-# ============================================================
-# BASE DE RECURSOS
-# ============================================================
+# =========================================================
+# SIDEBAR
+# =========================================================
 
-RECURSOS = [
-    {
-        "programa": "GREAT",
-        "tipo": "Juego",
-        "titulo": "Página de juegos virtuales Friv",
-        "descripcion": "Enlace de ejemplo hacia una página externa de juegos virtuales.",
-        "url": "https://www.friv.com/"
-    },
-    {
-        "programa": "GREAT",
-        "tipo": "Video",
-        "titulo": "Video educativo de apoyo",
-        "descripcion": "Video de YouTube agregado como ejemplo para el programa.",
-        "url": "https://www.youtube.com/watch?v=NVBf1AgIjBQ"
-    },
-    {
-        "programa": "GREAT",
-        "tipo": "PDF",
-        "titulo": "Material PDF del programa GREAT",
-        "descripcion": "Aquí puedes colocar el enlace de un PDF oficial o guía metodológica.",
-        "url": "https://www.great-online.org/"
-    },
+with st.sidebar:
 
-    {
-        "programa": "MPAS",
-        "tipo": "Juego",
-        "titulo": "Juegos virtuales de apoyo",
-        "descripcion": "Recurso interactivo externo para actividades educativas.",
-        "url": "https://www.friv.com/"
-    },
-    {
-        "programa": "MPAS",
-        "tipo": "Video",
-        "titulo": "Video educativo MPAS",
-        "descripcion": "Video de apoyo para actividades preventivas.",
-        "url": "https://www.youtube.com/watch?v=NVBf1AgIjBQ"
-    },
-    {
-        "programa": "MPAS",
-        "tipo": "PDF",
-        "titulo": "Material informativo MPAS",
-        "descripcion": "Espacio para agregar PDF, guía o documento institucional.",
-        "url": "https://www.seguridadpublica.go.cr/"
-    },
+    st.title("🧰 Caja Digital")
 
-    {
-        "programa": "DARE",
-        "tipo": "Video",
-        "titulo": "Video educativo YouTube",
-        "descripcion": "Video agregado como ejemplo para el programa DARE.",
-        "url": "https://www.youtube.com/watch?v=NVBf1AgIjBQ"
-    },
-    {
-        "programa": "DARE",
-        "tipo": "Juego",
-        "titulo": "Juegos virtuales Friv",
-        "descripcion": "Página externa de juegos interactivos.",
-        "url": "https://www.friv.com/"
-    },
-    {
-        "programa": "DARE",
-        "tipo": "PDF",
-        "titulo": "Material PDF DARE",
-        "descripcion": "Espacio para enlazar material informativo del programa.",
-        "url": "https://dare.org/"
-    },
-
-    {
-        "programa": "PSCC",
-        "tipo": "Video",
-        "titulo": "Video comunitario de prevención",
-        "descripcion": "Video de ejemplo para actividades comunitarias.",
-        "url": "https://www.youtube.com/watch?v=NVBf1AgIjBQ"
-    },
-    {
-        "programa": "PSCC",
-        "tipo": "Juego",
-        "titulo": "Juegos virtuales comunitarios",
-        "descripcion": "Página externa de juegos para actividades recreativas.",
-        "url": "https://www.friv.com/"
-    },
-    {
-        "programa": "PSCC",
-        "tipo": "PDF",
-        "titulo": "Material de Seguridad Comunitaria",
-        "descripcion": "Enlace de referencia para material comunitario.",
-        "url": "https://www.seguridadpublica.go.cr/"
-    },
-
-    {
-        "programa": "VIF",
-        "tipo": "Video",
-        "titulo": "Video de sensibilización",
-        "descripcion": "Video de apoyo para prevención y sensibilización.",
-        "url": "https://www.youtube.com/watch?v=NVBf1AgIjBQ"
-    },
-    {
-        "programa": "VIF",
-        "tipo": "Juego",
-        "titulo": "Actividad virtual de apoyo",
-        "descripcion": "Página externa de juegos para dinámicas educativas.",
-        "url": "https://www.friv.com/"
-    },
-    {
-        "programa": "VIF",
-        "tipo": "PDF",
-        "titulo": "Material informativo VIF",
-        "descripcion": "Espacio para enlazar PDF o guía sobre prevención de violencia intrafamiliar.",
-        "url": "https://www.seguridadpublica.go.cr/"
-    },
-]
-
-PROGRAMAS = {
-    "GREAT": {
-        "emoji": "🌟",
-        "clase": "great",
-        "descripcion": "Recursos, actividades, videos y herramientas preventivas para jóvenes."
-    },
-    "MPAS": {
-        "emoji": "🛡️",
-        "clase": "mpas",
-        "descripcion": "Materiales de apoyo preventivo, actividades educativas y recursos digitales."
-    },
-    "DARE": {
-        "emoji": "🎓",
-        "clase": "dare",
-        "descripcion": "Videos, dinámicas, juegos y material formativo para prevención."
-    },
-    "PSCC": {
-        "emoji": "🤝",
-        "clase": "pscc",
-        "descripcion": "Herramientas comunitarias, seguridad ciudadana y recursos de apoyo."
-    },
-    "VIF": {
-        "emoji": "🏠",
-        "clase": "vif",
-        "descripcion": "Material para prevención, sensibilización y orientación en violencia intrafamiliar."
-    },
-}
-
-# ============================================================
-# FUNCIONES
-# ============================================================
-
-def seleccionar_programa(nombre_programa):
-    st.session_state["programa_seleccionado"] = nombre_programa
-    st.rerun()
-
-
-def volver_inicio():
-    st.session_state["programa_seleccionado"] = None
-    st.rerun()
-
-
-def obtener_icono_tipo(tipo):
-    if tipo == "Video":
-        return "🎥"
-    if tipo == "Juego":
-        return "🎮"
-    if tipo == "PDF":
-        return "📄"
-    if tipo == "Presentación":
-        return "📊"
-    if tipo == "Actividad":
-        return "🧩"
-    return "🔗"
-
-
-def mostrar_tarjeta(programa):
-    datos = PROGRAMAS[programa]
-
-    st.markdown(f"""
-    <div class="card {datos["clase"]}">
-        <h2>{datos["emoji"]} {programa}</h2>
-        <p>{datos["descripcion"]}</p>
+    st.markdown("""
+    <div class="sidebar-card">
+        <h3>Biblioteca institucional</h3>
+        <p>Acceso rápido a herramientas, programas, guías y materiales digitales.</p>
     </div>
     """, unsafe_allow_html=True)
 
-    if st.button(f"Entrar a {programa}", key=f"btn_{programa}", use_container_width=True):
-        seleccionar_programa(programa)
+    st.link_button(
+        "📁 Abrir Drive VIF",
+        LINK_VIF,
+        use_container_width=True
+    )
 
+# =========================================================
+# SESSION
+# =========================================================
 
-def mostrar_menu_principal():
-    st.markdown('<div class="main-title">🧰 Caja de Herramientas</div>', unsafe_allow_html=True)
+if "modulo" not in st.session_state:
+    st.session_state.modulo = "inicio"
+
+# =========================================================
+# INICIO
+# =========================================================
+
+if st.session_state.modulo == "inicio":
+
     st.markdown(
-        '<div class="subtitle">Programas Preventivos Policiales</div>',
+        '<div class="main-title">Caja de Herramientas Digital</div>',
         unsafe_allow_html=True
     )
 
-    st.markdown("""
-    <div class="info-box">
-    Esta caja de herramientas permite centralizar materiales digitales de los programas preventivos policiales:
-    videos, juegos virtuales, documentos PDF, guías, presentaciones y recursos externos.
-    </div>
-    """, unsafe_allow_html=True)
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        mostrar_tarjeta("GREAT")
-
-    with col2:
-        mostrar_tarjeta("MPAS")
-
-    with col3:
-        mostrar_tarjeta("DARE")
-
-    col4, col5 = st.columns(2)
-
-    with col4:
-        mostrar_tarjeta("PSCC")
-
-    with col5:
-        mostrar_tarjeta("VIF")
-
-    st.markdown("---")
-    st.caption("Caja de Herramientas Digital | Programas Preventivos Policiales")
-
-
-def mostrar_pagina_programa(programa):
-    datos = PROGRAMAS[programa]
-
-    if st.button("⬅️ Volver a la caja de herramientas", use_container_width=True):
-        volver_inicio()
-
-    st.markdown(f"""
-    <div class="program-header {datos["clase"]}">
-        <h1>{datos["emoji"]} {programa}</h1>
-        <p>{datos["descripcion"]}</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown(f"""
-    <div class="info-box">
-    <b>Carpeta del programa:</b> {programa}<br>
-    Aquí se muestran únicamente los recursos relacionados con este programa:
-    videos, juegos virtuales, documentos PDF, guías, actividades y enlaces externos.
-    </div>
-    """, unsafe_allow_html=True)
-
-    recursos_filtrados = [
-        recurso for recurso in RECURSOS
-        if recurso["programa"] == programa
-    ]
-
-    filtro_tipo = st.selectbox(
-        "Filtrar por tipo de recurso",
-        ["Todos", "Video", "Juego", "PDF", "Presentación", "Actividad", "Enlace"],
-        key=f"filtro_{programa}"
+    st.markdown(
+        '<div class="main-subtitle">Seleccione un programa para acceder a recursos, documentos, videos y materiales institucionales.</div>',
+        unsafe_allow_html=True
     )
 
-    if filtro_tipo != "Todos":
-        recursos_filtrados = [
-            recurso for recurso in recursos_filtrados
-            if recurso["tipo"] == filtro_tipo
-        ]
+    c1, c2 = st.columns(2)
 
-    if not recursos_filtrados:
-        st.warning("No hay recursos registrados para este filtro.")
-        return
+    with c1:
 
-    for recurso in recursos_filtrados:
-        icono = obtener_icono_tipo(recurso["tipo"])
-
-        st.markdown(f"""
-        <div class="resource-card">
-            <div class="resource-type">{icono} {recurso["tipo"]}</div>
-            <div class="resource-title">{recurso["titulo"]}</div>
-            <div class="resource-desc">{recurso["descripcion"]}</div>
+        st.markdown("""
+        <div class="module-card vif">
+            <div>
+                <h2>🛡️ VIF</h2>
+                <p>Violencia Intrafamiliar, PLANOVI, redes locales, protocolos, guías, videos y documentación institucional.</p>
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
-        st.link_button(
-            f"{icono} Abrir recurso",
-            recurso["url"],
-            use_container_width=True
-        )
+        if st.button("Ingresar a VIF", use_container_width=True):
+            st.session_state.modulo = "vif"
+            st.rerun()
 
+    with c2:
 
-# ============================================================
-# CONTROL DE NAVEGACIÓN
-# ============================================================
+        st.markdown("""
+        <div class="module-card dare">
+            <div>
+                <h2>👮 DARE</h2>
+                <p>Programas preventivos, materiales educativos, presentaciones y recursos de prevención.</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
-if "programa_seleccionado" not in st.session_state:
-    st.session_state["programa_seleccionado"] = None
+        st.button("Próximamente", disabled=True, use_container_width=True)
 
-programa_actual = st.session_state["programa_seleccionado"]
+    c3, c4 = st.columns(2)
 
-if programa_actual:
-    mostrar_pagina_programa(programa_actual)
-else:
-    mostrar_menu_principal()
+    with c3:
 
+        st.markdown("""
+        <div class="module-card great">
+            <div>
+                <h2>🧠 GREAT</h2>
+                <p>Materiales de intervención preventiva, liderazgo juvenil y fortalecimiento comunitario.</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
+        st.button("Próximamente ", disabled=True, use_container_width=True)
 
+    with c4:
 
+        st.markdown("""
+        <div class="module-card juegos">
+            <div>
+                <h2>🎮 Juegos y Recursos</h2>
+                <p>Herramientas digitales, dinámicas, juegos virtuales y materiales interactivos.</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
+        st.button("Próximamente  ", disabled=True, use_container_width=True)
 
+# =========================================================
+# VIF
+# =========================================================
+
+elif st.session_state.modulo == "vif":
+
+    st.markdown("""
+    <div class="main-title">🛡️ Programa VIF</div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="info-box">
+        <h3>Biblioteca digital institucional</h3>
+        <p>
+        Acceda a documentos, manuales, protocolos, ejes PLANOVI,
+        guías metodológicas y recursos relacionados al programa VIF.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.link_button(
+        "📁 Abrir carpeta principal VIF PLANOVI-CONATT",
+        LINK_VIF,
+        use_container_width=True
+    )
+
+    st.divider()
+
+    # =====================================================
+    # REDES VIF
+    # =====================================================
+
+    st.markdown("""
+    <div class="folder-card">
+        <h3>📂 Redes VIF y Marco Institucional</h3>
+        <p>
+        Contiene manuales, directorios institucionales,
+        guías metodológicas, políticas públicas y documentación
+        de funcionamiento de redes locales VIF.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.link_button(
+        "📁 Abrir carpeta Redes VIF y Marco Institucional",
+        LINK_VIF,
+        use_container_width=True
+    )
+
+    # =====================================================
+    # EJES
+    # =====================================================
+
+    st.markdown("""
+    <div class="folder-card">
+        <h3>📂 Eje 1 PLANOVI Cultura No Machista</h3>
+        <p>
+        Recursos relacionados a cultura preventiva,
+        sensibilización y educación.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.link_button(
+        "Abrir Eje 1",
+        LINK_VIF,
+        use_container_width=True
+    )
+
+    st.markdown("""
+    <div class="folder-card">
+        <h3>📂 Eje 2 PLANOVI Masculinidad por la Igualdad</h3>
+        <p>
+        Materiales relacionados a masculinidades positivas
+        y prevención de violencia.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.link_button(
+        "Abrir Eje 2",
+        LINK_VIF,
+        use_container_width=True
+    )
+
+    st.markdown("""
+    <div class="folder-card">
+        <h3>📂 Eje 4 PLANOVI Debida Diligencia</h3>
+        <p>
+        Protocolos, procedimientos institucionales y
+        documentación operativa.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.link_button(
+        "Abrir Eje 4",
+        LINK_VIF,
+        use_container_width=True
+    )
+
+    st.markdown("""
+    <div class="folder-card">
+        <h3>📂 Eje 5 PLANOVI Prevención y Atención Integral</h3>
+        <p>
+        Recursos de atención, prevención y coordinación
+        interinstitucional.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.link_button(
+        "Abrir Eje 5",
+        LINK_VIF,
+        use_container_width=True
+    )
+
+    st.markdown("""
+    <div class="folder-card">
+        <h3>📂 Eje 6 PLANOVI Prevención del Femicidio</h3>
+        <p>
+        Materiales de prevención, intervención y análisis
+        relacionados al femicidio.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.link_button(
+        "Abrir Eje 6",
+        LINK_VIF,
+        use_container_width=True
+    )
+
+    # =====================================================
+    # RECURSOS EXTRA
+    # =====================================================
+
+    st.markdown("""
+    <div class="folder-card">
+        <h3>🎥 Videos y Multimedia</h3>
+        <p>
+        Videos educativos, material audiovisual,
+        capacitaciones y contenido multimedia.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.link_button(
+        "Abrir Videos",
+        LINK_VIF,
+        use_container_width=True
+    )
+
+    st.markdown("""
+    <div class="folder-card">
+        <h3>🎮 Juegos y Actividades Interactivas</h3>
+        <p>
+        Herramientas digitales y dinámicas para
+        actividades preventivas.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.link_button(
+        "Abrir Juegos",
+        LINK_VIF,
+        use_container_width=True
+    )
+
+    st.markdown("""
+    <div class="folder-card">
+        <h3>📚 Protocolos y Guías</h3>
+        <p>
+        Protocolos institucionales, lineamientos y
+        documentación oficial.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.link_button(
+        "Abrir Protocolos",
+        LINK_VIF,
+        use_container_width=True
+    )
+
+    st.divider()
+
+    if st.button("⬅️ Volver al inicio", use_container_width=True):
+        st.session_state.modulo = "inicio"
+        st.rerun()
